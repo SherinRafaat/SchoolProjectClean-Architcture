@@ -25,14 +25,14 @@ namespace School.infrastructure.Repos
         #endregion
 
         #region functions
-        public async Task<List<Student>> GetStudents()
+        public async Task<List<Student>> GetStudentsAsync()
         {
-           return await _dbcontext.Students.ToListAsync();
+           return await _dbcontext.Students.Include(x=>x.Department).ToListAsync();
         }
         #endregion
 
 
-
+ 
 
 
 

@@ -1,23 +1,27 @@
 using Microsoft.EntityFrameworkCore;
+using School.Core;
+using School.infrastructure;
 using School.infrastructure.Repos;
 using School.Infrastructure.Data;
+using School.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
-    option.UseSqlServer
-    (builder.Configuration.GetConnectionString("DbContext"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
 });
 
-builder.Services.AddTransient<School.infrastructure.Abstracts.IStudentRepository, StudentRepository>();
-
+#region Dependencies
+builder.Services.AddInfrastructureDependencies()
+    .AddServicesDependencies()
+    .AddCoreDependencies();
+#endregion 
 
 var app = builder.Build();
 
@@ -25,7 +29,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
 
 app.UseHttpsRedirection();

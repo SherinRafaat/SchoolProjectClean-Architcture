@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace School.infrastructure.Abstracts
+namespace School.Services.Abstracts
 {
-   public interface IStudentRepository
+    public interface IStudentServices
     {
-     public Task<List<Student>> GetStudentsAsync();
+        public Task<List<Student>> GetStudentsListAsync();
 
     }
 }
